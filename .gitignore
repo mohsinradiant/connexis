@@ -1,0 +1,11 @@
+/node_modules
+/dist
+/dist-ssr
+.DS_Store
+*.pem
+npm-debug.log*
+.env*
+!.env.example
+/.data
+/.next
+/.next-build

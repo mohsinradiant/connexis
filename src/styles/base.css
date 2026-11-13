@@ -1,0 +1,599 @@
+/* Connexis — "Night Shift" design system.
+   Night: asphalt + sodium amber. Day: warm paper + ink. Connexis red is the alert signal only. */
+:root {
+  /* Plain black, neutral greys, Connexis red as the only accent. */
+  --night: #0a0a0a;
+  --night-2: #121212;
+  --night-3: #1a1a1a;
+  --chalk: #f2f2f2;
+  --chalk-2: #9e9e9e;
+  --rule-n: rgba(255, 255, 255, 0.1);
+
+  /* Both bands are the same black now; the names stay so the theme switch keeps working. */
+  --paper: #0a0a0a;
+  --paper-2: #121212;
+  --paper-3: #1a1a1a;
+  --ink: #f2f2f2;
+  --ink-2: #9e9e9e;
+  --rule-p: rgba(255, 255, 255, 0.1);
+  --card: #111111;
+  --card-hi: #171717;
+  --line: rgba(255, 255, 255, 0.14);
+
+  /* the lighter red reads on graphite; kept under its old name so night accents switch over */
+  --sodium: #ff4b40;
+  --signal: #e1251b;
+  --signal-ink: #ff5a4f; /* red text that reads on the dark bands */
+  --ok: #46c98a;
+
+  --f-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --w-display: 600;
+  --f-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Type scale. Every text style on the site uses these; no one-off sizes or weights.
+     Weights: 400 for running text, 600 for anything that is a title, label, button or number. */
+  --fs-micro: 11px; /* only inside the miniature product screens */
+  --fs-xs: 13px; /* labels, meta, captions */
+  --fs-sm: 15px; /* secondary text, card copy, nav, buttons */
+  --fs-md: 17px; /* body */
+  --fs-lg: clamp(18px, 1.5vw, 21px); /* lead paragraphs */
+  --fs-title: clamp(19px, 1.5vw, 22px); /* card and list titles */
+  --fs-d5: clamp(22px, 1.9vw, 28px);
+  --fs-d4: clamp(26px, 2.7vw, 40px);
+  --fs-d3: clamp(30px, 3.8vw, 58px);
+  --fs-d2: clamp(36px, 5.2vw, 88px);
+  --fs-d1: clamp(42px, 7vw, 120px);
+  --fs-stat: clamp(40px, 5vw, 80px); /* big figures */
+
+  --lh-tight: 1; /* large display, figures */
+  --lh-snug: 1.1; /* display headings */
+  --lh-title: 1.3; /* titles, labels */
+  --lh-ui: 1.45; /* small text */
+  --lh-body: 1.6;
+
+  --ls-display: -0.03em;
+  --ls-title: -0.015em;
+
+  --radius: 4px;
+
+  --gutter: clamp(20px, 4vw, 64px);
+  --max: 1480px;
+  --nav-h: 88px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* theme-dependent, switched by [data-theme] */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --fg-2: var(--ink-2);
+  --rule: var(--rule-p);
+  --red: var(--signal-ink);
+}
+
+[data-theme="night"] {
+  --bg: var(--night);
+  --fg: var(--chalk);
+  --fg-2: var(--chalk-2);
+  --rule: var(--rule-n);
+  --red: var(--signal);
+  background: var(--bg);
+  color: var(--fg);
+}
+[data-theme="paper"] {
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --fg-2: var(--ink-2);
+  --rule: var(--rule-p);
+  --red: var(--signal-ink);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  background: var(--night);
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 var(--fs-md) / var(--lh-body) var(--f-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-wrap: break-word;
+  overflow-x: clip;
+}
+@media (min-width: 900px) {
+  :root {
+    --fs-md: 18px;
+  }
+}
+img,
+svg,
+canvas,
+video {
+  display: block;
+  max-width: 100%;
+}
+img {
+  height: auto;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+dl,
+dd,
+blockquote {
+  margin: 0;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--f-display);
+  font-weight: var(--w-display);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-title);
+  text-wrap: balance;
+}
+/* Even rag, no one-word last lines. */
+p,
+li,
+dd,
+dt,
+figcaption,
+blockquote,
+label,
+legend {
+  text-wrap: pretty;
+}
+b,
+strong {
+  font-weight: 600;
+}
+::selection {
+  background: var(--signal);
+  color: #fff;
+}
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid var(--sodium);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: fixed;
+  left: 12px;
+  top: -60px;
+  z-index: 300;
+  background: var(--sodium);
+  color: var(--night);
+  padding: 10px 14px;
+  font-weight: 600;
+}
+.skip:focus {
+  top: 12px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Product mockups (alert toast, portal screens) stay light, like a real device screen. */
+.hero__alert,
+.hero__screen,
+.pf__panel:not(.is-dark),
+.screen__body,
+.iso {
+  --ink: #16181b;
+  --ink-2: #50555c;
+  --paper: #e9eaec;
+  --paper-2: #dfe1e4;
+  --fg: #16181b;
+  --fg-2: #50555c;
+  --rule: rgba(22, 24, 27, 0.15);
+  --signal-ink: #c4231b;
+  --red: #c4231b;
+  color: #16181b;
+}
+
+/* ------------------------------------------------------------------ layout */
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.section {
+  position: relative;
+  padding-block: clamp(52px, 6vw, 92px);
+}
+/* every band is the same black, so neighbouring sections share one gap instead of stacking two */
+.section + .section {
+  padding-top: 0;
+}
+/* the first section after a page hero starts close under it */
+.phero + .section {
+  padding-top: clamp(24px, 3vw, 40px);
+}
+.section--tight {
+  padding-block: clamp(40px, 4.5vw, 64px);
+}
+.rule {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ type */
+.d-xxl,
+.d-xl,
+.d-l,
+.d-m,
+.d-s,
+.t-title {
+  font-family: var(--f-display);
+  font-weight: var(--w-display);
+  letter-spacing: var(--ls-display);
+  text-wrap: balance;
+}
+.d-xxl {
+  font-size: var(--fs-d1);
+  line-height: var(--lh-tight);
+}
+.d-xl {
+  font-size: var(--fs-d2);
+  line-height: var(--lh-tight);
+}
+.d-l {
+  font-size: var(--fs-d3);
+  line-height: var(--lh-snug);
+}
+.d-m {
+  font-size: var(--fs-d4);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-title);
+}
+.d-s {
+  font-size: var(--fs-d5);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-title);
+}
+/* card and list titles */
+.t-title {
+  font-size: var(--fs-title);
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+}
+.lead {
+  font-size: var(--fs-lg);
+  line-height: 1.5;
+  color: var(--fg-2);
+  max-width: 34em;
+}
+.body-2 {
+  color: var(--fg-2);
+}
+/* small supporting text: captions, meta, figures */
+.mono {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  line-height: var(--lh-ui);
+  font-variant-numeric: tabular-nums;
+}
+/* Small label above a heading. In section heads it becomes a numbered marker: "01 ———". */
+.tag {
+  display: inline-block;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  line-height: var(--lh-ui);
+  color: var(--fg-2);
+}
+body {
+  counter-reset: shead;
+}
+.shead .tag {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  counter-increment: shead;
+}
+.shead .tag::before {
+  content: counter(shead, decimal-leading-zero);
+  color: var(--red);
+  font-variant-numeric: tabular-nums;
+}
+.shead .tag::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--signal) 0 48px, var(--rule) 48px);
+  transform-origin: left;
+}
+/* the rule runs to the content's right edge, past a narrow heading block */
+.wrap > .shead:not(.shead--center) .tag {
+  width: calc(min(100vw, var(--max)) - 2 * var(--gutter));
+  max-width: calc(100vw - 2 * var(--gutter));
+}
+/* with JS, the rule draws in when its section arrives and the number drops into place */
+html.js .shead .tag::after {
+  transform: scaleX(0);
+  transition: transform 1.4s var(--ease) 0.15s;
+}
+html.js .shead .tag::before {
+  display: inline-block;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.8s var(--ease), opacity 0.8s var(--ease);
+}
+html.js .shead .tag.is-in::after {
+  transform: scaleX(1);
+}
+html.js .shead .tag.is-in::before {
+  transform: none;
+  opacity: 1;
+}
+
+/* cursor spotlight on cards (added by the motion layer on fine pointers) */
+.has-spot {
+  position: relative;
+  isolation: isolate;
+}
+.spot {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.07), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+.has-spot:hover .spot {
+  opacity: 1;
+}
+.shead--center .tag {
+  margin-inline: auto;
+}
+.num {
+  font-variant-numeric: tabular-nums;
+}
+.red {
+  color: var(--red);
+}
+.amber {
+  color: var(--sodium);
+}
+.ln {
+  padding-bottom: 0.04em;
+}
+
+/* ------------------------------------------------------------------ buttons */
+.btn {
+  --b: var(--fg);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 0 24px;
+  font: 600 var(--fs-sm) / 1 var(--f-body);
+  white-space: nowrap;
+  border-radius: var(--radius);
+  transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.btn svg {
+  transition: transform 0.45s var(--ease);
+}
+.btn:hover svg {
+  transform: translateX(4px);
+}
+.btn--signal {
+  --b: var(--signal);
+  background: var(--signal);
+  color: #fff;
+}
+.btn--signal:hover {
+  background: #ff3d33;
+}
+.btn--glass {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+  backdrop-filter: blur(10px);
+}
+.btn--glass:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+.btn--line {
+  border: 1px solid var(--rule);
+  color: var(--fg);
+}
+.btn--line:hover {
+  border-color: var(--fg);
+}
+.btn--solid {
+  background: var(--fg);
+  color: var(--bg);
+}
+.btn--sm {
+  min-height: 42px;
+  padding: 0 16px;
+  font-size: var(--fs-sm);
+}
+.btn--block {
+  width: 100%;
+}
+
+.ulink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  padding-bottom: 3px;
+  transition: background-size 0.5s var(--ease);
+}
+.ulink:hover {
+  background-size: 0 1px;
+  background-position: 100% 100%;
+}
+.ulink svg {
+  transition: transform 0.45s var(--ease);
+}
+.ulink:hover svg {
+  transform: translate(3px, -3px);
+}
+
+/* ------------------------------------------------------------------ media */
+.photo {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--night-3);
+}
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo--grade img {
+  filter: saturate(0.85) contrast(1.05);
+}
+/* On night sections photos are pulled into the sodium palette so daylight shots do not glare. */
+[data-theme="night"] .photo--grade img {
+  filter: grayscale(0.35) brightness(0.88) contrast(1.08);
+}
+[data-theme="night"] .photo--grade::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.1));
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+.blend {
+  mix-blend-mode: multiply;
+}
+
+/* HUD corner brackets around any box */
+.brackets {
+  position: relative;
+}
+.brackets::before,
+.brackets::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--sodium);
+  pointer-events: none;
+  z-index: 2;
+}
+.brackets::before {
+  left: -1px;
+  top: -1px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.brackets::after {
+  right: -1px;
+  bottom: -1px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 0 0 rgba(70, 201, 138, 0.6);
+  animation: ping 2s infinite;
+}
+.dot--red {
+  background: var(--signal);
+  animation-name: ping-red;
+}
+@keyframes ping {
+  70% {
+    box-shadow: 0 0 0 8px rgba(70, 201, 138, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(70, 201, 138, 0);
+  }
+}
+@keyframes ping-red {
+  0% {
+    box-shadow: 0 0 0 0 rgba(229, 50, 42, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(229, 50, 42, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(229, 50, 42, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
